@@ -28,6 +28,8 @@ public class WorldGenerator : MonoBehaviour {
 
 	public float hazardRisk = 0.1f;
 
+	public float gemOdds = 0.5f;
+
 	// Helper
 
 	private static Vector3 RandomPointInBox(Vector3 center, Vector3 size) {
@@ -59,12 +61,34 @@ public class WorldGenerator : MonoBehaviour {
 		hazard.transform.position = position;
 	}
 
-	GameObject MakePlatform(Vector3 position)
+	GameObject MakePlatform(Vector3 position, bool trySpawningFeatures)
 	{
 		int platformIndex = Random.Range(0, platforms.Length); // We will use this to spawn a base platform
 
 		GameObject platform = Instantiate(platforms[platformIndex]);
 		platform.transform.position = position;
+
+		if (trySpawningFeatures)
+		{
+			// Box for spawning any extras
+
+			BoxCollider collider = platform.GetComponent<BoxCollider>();
+
+			// Add a potential hazard
+
+			if (Random.value <= hazardRisk)
+			{
+				MakeHazard(RandomPointInBox(platform.transform.position + new Vector3(0.0f, collider.size.y, 0.0f), collider.size));
+			}
+
+			// We will create gems at random points within the top of a platform
+
+			// Yes or no for gem creation
+			if (Random.value <= gemOdds)
+			{
+				AddGemDeposit(platform.transform.position, collider);
+			}
+		}
 
 		return platform;
 	}
@@ -106,11 +130,11 @@ public class WorldGenerator : MonoBehaviour {
 
 		Stack<GameObject> platformsInMap = new Stack<GameObject>(); // We will need to track all of our platforms here
 
-		platformsInMap.Push(MakePlatform(startingPosition)); // Create our first platform and add it to the stack
+		platformsInMap.Push(MakePlatform(startingPosition, false)); // Create our first platform and add it to the stack, don't add any additional features
 
 		Vector3 endingPosition = new Vector3(Random.Range(-maxPlatforms, maxPlatforms), Random.Range(-maxPlatforms, maxPlatforms), Random.Range(-maxPlatforms, maxPlatforms));
 
-		GameObject endPlatform = MakePlatform(endingPosition);
+		GameObject endPlatform = MakePlatform(endingPosition, false); // We don't want any additional things on the final platform either
 
 		// Now create the end, with the goal located at it.
 
@@ -143,95 +167,30 @@ public class WorldGenerator : MonoBehaviour {
 		{
 			GameObject previousPlatform = platformsInMap.Pop();
 
-			Vector3 newLocation = (startingPosition - previousPlatform.transform.position) / 2;
-
-			GameObject newPlatform;
+			Vector3 newLocation = (startingPosition - previousPlatform.transform.position);
 
 			// We don't want to have compressed platform spaces
-			if (newLocation.magnitude >= platformOffset) newPlatform = MakePlatform(newLocation);
-			else newPlatform = MakePlatform(newLocation * 2);
+			if (newLocation.magnitude >= platformOffset) newLocation = (startingPosition - previousPlatform.transform.position) / 2;
 
+			GameObject newPlatform = MakePlatform(newLocation, true); // Add a platform and possibly add additional features to it
+
+			// Add to our linked inst, maintaining a sequential order of platforms
 			platformsInMap.Push(newPlatform);
-
-			// Box for spawning any extras
-
-			BoxCollider collider = newPlatform.GetComponent<BoxCollider>();
-
-			// Add a potential hazard
-
-			if (Random.value >= hazardRisk)
-			{
-				MakeHazard(RandomPointInBox(newPlatform.transform.position + new Vector3(0.0f, collider.size.y, 0.0f), collider.size));
-			}
-
-			// We will create gems at random points within the top of a platform
-
-			// Yes or no for gem creation
-			if (Random.value >= 0.5)
-			{
-				continue; // We will not create gems
-			}
-
-			AddGemDeposit(newPlatform.transform.position, collider);
 		}
 
-		// TODO: Make a new algorithm to distribute any excess platforms around the level.
+		// We have already added some platforms, so we will calculate and store the remaining ones
+		platformCount -= directPathPlatforms;
 
-		// Old generation algorithm
-		// Now make platforms
-		/*
-		for (int i = 0; i < platformCount; i++) {
+		// Insert any additional platforms needed for successful player traversal and/or play value, but only if we need to do so.
 
-			// We need data from last platform
-
-			GameObject lastPlatform = platformsInMap.Pop();
-
-			// Now determine the position of the next one
-
-			float xOffset = Random.Range(-platformOffset, platformOffset);
-
-			float yOffset; // This can only be one of two values
-
-			if (Random.value >= 0.5)
+		if (platformCount > 0)
+		{
+			for (int i = 0; i < platformCount; i++)
 			{
-				yOffset = platformOffset/2;
+				platformCount--; // Because we need this for our remaining
 			}
-			else
-			{
-				yOffset = -platformOffset/2;
-			}
-
-			// Double the offset of the second platform to make it easier to see our player when we start
-			if (i == 0) yOffset = yOffset * 2;
-
-			float zOffset = Random.Range(-platformOffset, platformOffset);
-
-			Vector3 position = lastPlatform.transform.position + new Vector3(xOffset, yOffset, zOffset); 
-
-			platformsInMap.Push(MakePlatform(position)); // Add the next platform
-
-			// Box for spawning any extras
-
-			BoxCollider collider = lastPlatform.GetComponent<BoxCollider>();
-
-			// Add a potential hazard
-
-			if (Random.value >= 0.5)
-			{
-				MakeHazard(RandomPointInBox(position + new Vector3(0.0f, collider.size.y, 0.0f), collider.size));
-			}
-
-			// We will create gems at random points within the top of a platform
-
-			// Yes or no for gem creation
-			if (Random.value >= 0.5)
-			{
-				continue; // We will not create gems
-			}
-
-			AddGemDeposit(position, collider);
 		}
-	*/
+
 		//AddDeathBox();
 	}
 
