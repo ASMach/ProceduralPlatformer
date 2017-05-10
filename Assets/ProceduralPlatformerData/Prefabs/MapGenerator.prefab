@@ -68,5 +68,6 @@ MonoBehaviour:
   minPlatforms: 15
   maxPlatforms: 100
   maxGemsPerPlatform: 8
-  platformOffset: 4
+  platformOffset: 6
   hazardRisk: 0.1
+  gemOdds: 0.5

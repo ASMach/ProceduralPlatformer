@@ -103,12 +103,14 @@ public class WorldGenerator : MonoBehaviour {
 		}
 	}
 
-	void AddDeathBox()
+	void AddDeathBox(Vector3 position)
 	{
 
 		// We need a way to kill the player on a fallout
 
 		GameObject deathBox = new GameObject();
+		deathBox.transform.position = position;
+		deathBox.name = "DeathBox";
 		deathBox.AddComponent<BoxCollider>();
 		deathBox.GetComponent<BoxCollider>().isTrigger = true; // Otherwise it won't be able to kill us!
 
@@ -117,9 +119,6 @@ public class WorldGenerator : MonoBehaviour {
 
 		// Add script to kill us
 		deathBox.AddComponent<KillPlayer>();
-
-		// Actually add the deathbox to our map
-		Instantiate(deathBox, new Vector3(0.0f, -deathBoxSide, 0.0f), Quaternion.identity);
 	}
 
 	// Lifecycle
@@ -130,7 +129,9 @@ public class WorldGenerator : MonoBehaviour {
 
 		Stack<GameObject> platformsInMap = new Stack<GameObject>(); // We will need to track all of our platforms here
 
-		platformsInMap.Push(MakePlatform(startingPosition, false)); // Create our first platform and add it to the stack, don't add any additional features
+		Stack<GameObject> platformsBeingAdded = new Stack<GameObject>(); // Secondary tracking stack
+
+		platformsBeingAdded.Push(MakePlatform(startingPosition, false)); // Create our first platform and add it to the stack, don't add any additional features
 
 		Vector3 endingPosition = new Vector3(Random.Range(-maxPlatforms, maxPlatforms), Random.Range(-maxPlatforms, maxPlatforms), Random.Range(-maxPlatforms, maxPlatforms));
 
@@ -138,7 +139,7 @@ public class WorldGenerator : MonoBehaviour {
 
 		// Now create the end, with the goal located at it.
 
-		platformsInMap.Push(endPlatform);
+		platformsBeingAdded.Push(endPlatform);
 
 		GameObject endGoal = Instantiate(goal, endPlatform.transform.position + new Vector3(0.0f, 2.0f, 0.0f), endPlatform.transform.rotation);
 		endGoal.transform.parent = endPlatform.transform; // We need to be able to move both of them at the same time if a viable solution is not possible.
@@ -165,17 +166,19 @@ public class WorldGenerator : MonoBehaviour {
 		// Lay out basic path
 		for (int i = 0; i < directPathPlatforms; i++)
 		{
-			GameObject previousPlatform = platformsInMap.Pop();
+			GameObject previousPlatform = platformsBeingAdded.Pop();
 
-			Vector3 newLocation = (startingPosition - previousPlatform.transform.position);
+			platformsInMap.Push(previousPlatform); // We need to track what we have previously added.
+
+			Vector3 newPosition = (startingPosition - previousPlatform.transform.position);
 
 			// We don't want to have compressed platform spaces
-			if (newLocation.magnitude >= platformOffset) newLocation = (startingPosition - previousPlatform.transform.position) / 2;
+			if (newPosition.magnitude >= platformOffset) newPosition = (startingPosition - previousPlatform.transform.position) / 2;
 
-			GameObject newPlatform = MakePlatform(newLocation, true); // Add a platform and possibly add additional features to it
+			GameObject newPlatform = MakePlatform(newPosition, true); // Add a platform and possibly add additional features to it
 
 			// Add to our linked inst, maintaining a sequential order of platforms
-			platformsInMap.Push(newPlatform);
+			platformsBeingAdded.Push(newPlatform);
 		}
 
 		// We have already added some platforms, so we will calculate and store the remaining ones
@@ -191,7 +194,17 @@ public class WorldGenerator : MonoBehaviour {
 			}
 		}
 
-		//AddDeathBox();
+		// Find the platform at the lowest level
+
+		float lowestPosition = 0.0f;
+
+		foreach (GameObject platform in platformsInMap)
+		{
+			// We are looking for the lowest position, and it must always be a negative number
+			if (platform.transform.position.y < lowestPosition) lowestPosition = -Mathf.Abs(platform.transform.position.y);
+		}
+
+		AddDeathBox(new Vector3(0.0f, lowestPosition - 20.0f, 0.0f));
 	}
 
 	// Use this for initialization
