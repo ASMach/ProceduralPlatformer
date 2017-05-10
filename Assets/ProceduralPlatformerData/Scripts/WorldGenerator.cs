@@ -26,7 +26,7 @@ public class WorldGenerator : MonoBehaviour {
 
 	public float platformOffset = 4.0f;
 
-	protected bool[,,] blocks;
+	public float hazardRisk = 0.1f;
 
 	// Helper
 
@@ -143,13 +143,13 @@ public class WorldGenerator : MonoBehaviour {
 		{
 			GameObject previousPlatform = platformsInMap.Pop();
 
-			float platformsRemaining = directPathPlatforms / (i + 1);
+			Vector3 newLocation = (startingPosition - previousPlatform.transform.position) / 2;
 
-			float newX = (startingPosition.x - previousPlatform.transform.position.x) / platformsRemaining;
-			float newY = (startingPosition.y - previousPlatform.transform.position.y) / platformsRemaining;
-			float newZ = (startingPosition.z - previousPlatform.transform.position.z) / platformsRemaining;
+			GameObject newPlatform;
 
-			GameObject newPlatform = MakePlatform(new Vector3(newX, newY, newZ));
+			// We don't want to have compressed platform spaces
+			if (newLocation.magnitude >= platformOffset) newPlatform = MakePlatform(newLocation);
+			else newPlatform = MakePlatform(newLocation * 2);
 
 			platformsInMap.Push(newPlatform);
 
@@ -159,7 +159,7 @@ public class WorldGenerator : MonoBehaviour {
 
 			// Add a potential hazard
 
-			if (Random.value >= 0.5)
+			if (Random.value >= hazardRisk)
 			{
 				MakeHazard(RandomPointInBox(newPlatform.transform.position + new Vector3(0.0f, collider.size.y, 0.0f), collider.size));
 			}
@@ -238,7 +238,6 @@ public class WorldGenerator : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		// Spawn the player at the origin
-		Instantiate(player);
-		player.transform.position = startingPosition;
+		Instantiate(player, startingPosition, Quaternion.identity);
 	}
 }

@@ -68,5 +68,5 @@ MonoBehaviour:
   minPlatforms: 15
   maxPlatforms: 100
   maxGemsPerPlatform: 8
-  levelBlocksPerDirection: 10
   platformOffset: 4
+  hazardRisk: 0.1
