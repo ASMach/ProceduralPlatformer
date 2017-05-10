@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Released under Creative Commons License by Alonzo Machiraju, 2017
+
 public class PlayerStatus : MonoBehaviour {
 
 	public GameObject deathEffect;
@@ -24,7 +26,13 @@ public class PlayerStatus : MonoBehaviour {
 		get { return score; }
 		set { 
 			if (value < 0) score = 0;
-			else score = value; }
+			else score = value; 
+
+			Debug.Log("Score: " + score);
+
+			GameObject scoreLabel = GameObject.FindGameObjectWithTag("ScoreLabel");
+			scoreLabel.GetComponent<HUD.ScoreCounter>().UpdateScoreDisplay(score);
+		}
 	}
 
 

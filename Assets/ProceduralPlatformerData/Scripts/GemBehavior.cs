@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Released under Creative Commons License by Alonzo Machiraju, 2017
+
 public class GemBehavior : MonoBehaviour {
 
 	public int value = 100;
@@ -23,7 +25,7 @@ public class GemBehavior : MonoBehaviour {
 		if(other.gameObject.tag == "Player") // Only the player can pick something up and score!
 		{	
 			// Play effect on pickup
-			if (pickupEffect) Instantiate<ParticleSystem>(pickupEffect, transform.position, transform.rotation);
+			if (pickupEffect) Instantiate<ParticleSystem>(pickupEffect, transform.position, transform.rotation * Quaternion.Euler(-90.0f, 0.0f, 0.0f));
 
 			// Update player score here
 

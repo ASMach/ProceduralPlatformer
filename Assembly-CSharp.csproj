@@ -108,6 +108,8 @@
      <Compile Include="Assets\ProceduralPlatformerData\Scripts\GemBehavior.cs" />
      <Compile Include="Assets\ProceduralPlatformerData\Scripts\KillPlayer.cs" />
      <Compile Include="Assets\ProceduralPlatformerData\Scripts\PlayerStatus.cs" />
+     <Compile Include="Assets\ProceduralPlatformerData\Scripts\ScoreCounter.cs" />
+     <Compile Include="Assets\ProceduralPlatformerData\Scripts\WinMap.cs" />
      <Compile Include="Assets\ProceduralPlatformerData\Scripts\WorldGenerator.cs" />
      <Compile Include="Assets\SampleScenes\Menu\Scripts\MenuSceneLoader.cs" />
      <Compile Include="Assets\SampleScenes\Menu\Scripts\PauseMenu.cs" />
@@ -131,7 +133,6 @@
      <None Include="Assets\Standard Assets\Effects\TessellationShaders\Shaders\BumpedSpecularSmooth.shader" />
      <None Include="Assets\Standard Assets\Effects\Projectors\Guidelines.txt" />
      <None Include="Assets\PostProcessing\Resources\Shaders\ScreenSpaceReflection.shader" />
-     <None Include="Assets\Editor\GitHub\CREDITS.txt" />
      <None Include="Assets\PostProcessing\Resources\Shaders\ACES.cginc" />
      <None Include="Assets\PostProcessing\Resources\Shaders\UberSecondPass.cginc" />
      <None Include="Assets\PostProcessing\Resources\Shaders\Tonemapping.cginc" />
@@ -192,7 +193,6 @@
      <None Include="Assets\Standard Assets\Effects\TessellationShaders\Shaders\BumpedSpecularDisplacement.shader" />
      <None Include="Assets\PostProcessing\Resources\Shaders\AmbientOcclusion.cginc" />
      <None Include="Assets\Gem\Shaders\Gem.shader" />
-     <None Include="Assets\Editor\GitHub\EULA.txt" />
      <None Include="Assets\PostProcessing\Editor Resources\Monitors\WaveformCompute.compute" />
      <None Include="Assets\SampleScenes\Shaders\Skybox-Procedural.shader" />
  <Reference Include="UnityEngine.UI">

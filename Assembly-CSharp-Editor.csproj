@@ -94,7 +94,6 @@
      <None Include="Assets\Standard Assets\Effects\TessellationShaders\Shaders\BumpedSpecularSmooth.shader" />
      <None Include="Assets\Standard Assets\Effects\Projectors\Guidelines.txt" />
      <None Include="Assets\PostProcessing\Resources\Shaders\ScreenSpaceReflection.shader" />
-     <None Include="Assets\Editor\GitHub\CREDITS.txt" />
      <None Include="Assets\PostProcessing\Resources\Shaders\ACES.cginc" />
      <None Include="Assets\PostProcessing\Resources\Shaders\UberSecondPass.cginc" />
      <None Include="Assets\PostProcessing\Resources\Shaders\Tonemapping.cginc" />
@@ -155,7 +154,6 @@
      <None Include="Assets\Standard Assets\Effects\TessellationShaders\Shaders\BumpedSpecularDisplacement.shader" />
      <None Include="Assets\PostProcessing\Resources\Shaders\AmbientOcclusion.cginc" />
      <None Include="Assets\Gem\Shaders\Gem.shader" />
-     <None Include="Assets\Editor\GitHub\EULA.txt" />
      <None Include="Assets\PostProcessing\Editor Resources\Monitors\WaveformCompute.compute" />
      <None Include="Assets\SampleScenes\Shaders\Skybox-Procedural.shader" />
  <Reference Include="UnityEditor.Advertisements">
@@ -217,45 +215,6 @@
  </Reference>
  <Reference Include="UnityEditor.OSXStandalone.Extensions">
  <HintPath>/Applications/Unity/Unity.app/Contents/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll</HintPath>
- </Reference>
- <Reference Include="Octokit">
- <HintPath>/Users/alonzomachiraju/Development/Unity/ProceduralPlatformer/Assets/Editor/GitHub/Octokit.dll</HintPath>
- </Reference>
- <Reference Include="GitHub.Logging">
- <HintPath>/Users/alonzomachiraju/Development/Unity/ProceduralPlatformer/Assets/Editor/GitHub/GitHub.Logging.dll</HintPath>
- </Reference>
- <Reference Include="Rackspace.Threading">
- <HintPath>/Users/alonzomachiraju/Development/Unity/ProceduralPlatformer/Assets/Editor/GitHub/Rackspace.Threading.dll</HintPath>
- </Reference>
- <Reference Include="Mono.Security">
- <HintPath>/Users/alonzomachiraju/Development/Unity/ProceduralPlatformer/Assets/Editor/GitHub/Mono.Security.dll</HintPath>
- </Reference>
- <Reference Include="GitHub.Unity">
- <HintPath>/Users/alonzomachiraju/Development/Unity/ProceduralPlatformer/Assets/Editor/GitHub/GitHub.Unity.dll</HintPath>
- </Reference>
- <Reference Include="ReadOnlyCollectionsInterfaces">
- <HintPath>/Users/alonzomachiraju/Development/Unity/ProceduralPlatformer/Assets/Editor/GitHub/ReadOnlyCollectionsInterfaces.dll</HintPath>
- </Reference>
- <Reference Include="System.Threading">
- <HintPath>/Users/alonzomachiraju/Development/Unity/ProceduralPlatformer/Assets/Editor/GitHub/System.Threading.dll</HintPath>
- </Reference>
- <Reference Include="GitHub.Api">
- <HintPath>/Users/alonzomachiraju/Development/Unity/ProceduralPlatformer/Assets/Editor/GitHub/GitHub.Api.dll</HintPath>
- </Reference>
- <Reference Include="System.Net.Http">
- <HintPath>/Users/alonzomachiraju/Development/Unity/ProceduralPlatformer/Assets/Editor/GitHub/System.Net.Http.dll</HintPath>
- </Reference>
- <Reference Include="AsyncBridge.Net35">
- <HintPath>/Users/alonzomachiraju/Development/Unity/ProceduralPlatformer/Assets/Editor/GitHub/AsyncBridge.Net35.dll</HintPath>
- </Reference>
- <Reference Include="Octokit-Extensions35">
- <HintPath>/Users/alonzomachiraju/Development/Unity/ProceduralPlatformer/Assets/Editor/GitHub/Octokit-Extensions35.dll</HintPath>
- </Reference>
- <Reference Include="ICSharpCode.SharpZipLib">
- <HintPath>/Users/alonzomachiraju/Development/Unity/ProceduralPlatformer/Assets/Editor/GitHub/ICSharpCode.SharpZipLib.dll</HintPath>
- </Reference>
- <Reference Include="sfw.net">
- <HintPath>/Users/alonzomachiraju/Development/Unity/ProceduralPlatformer/Assets/Editor/GitHub/sfw.net.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
  <HintPath>/Applications/Unity/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
