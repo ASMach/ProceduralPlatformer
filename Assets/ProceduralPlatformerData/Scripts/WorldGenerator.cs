@@ -32,6 +32,10 @@ public class WorldGenerator : MonoBehaviour {
 
 	public float gemOdds = 0.5f;
 
+	public float verticalOffsetOdds = 0.5f;
+
+	public float inversionOdds = 0.5f;
+
 	// Helper
 
 	private static Vector3 RandomPointInBox(Vector3 center, Vector3 size) {
@@ -76,9 +80,9 @@ public class WorldGenerator : MonoBehaviour {
 
 			BoxCollider collider = platform.GetComponent<BoxCollider>();
 
-			// Add a potential hazard
+			// Add a potential hazard - but only if the platform is large enough.
 
-			if (Random.value <= hazardRisk)
+			if (Random.value <= hazardRisk && (collider.size.x / 2 > minPlatformOffset || collider.size.z / 2 > minPlatformOffset))
 			{
 				MakeHazard(RandomPointInBox(platform.transform.position + new Vector3(0.0f, collider.size.y, 0.0f), collider.size));
 			}
@@ -123,239 +127,77 @@ public class WorldGenerator : MonoBehaviour {
 		deathBox.AddComponent<KillPlayer>();
 	}
 
-	int RandomInsidePlatformCountBounds()
-	{
-		return Random.Range(-maxPlatforms, maxPlatforms);
-	}
-
-	int RandomPlatformArrayIndex()
-	{
-		return Random.Range(0, maxPlatforms - 1);
-	}
-
 	float RandomPlatformSpacing()
 	{
 		return Random.Range(minPlatformOffset, maxPlatformOffset);
 	}
 
-	// Lifecycle
+	float RandomInvert(float value)
+	{
+		if (Random.value >= inversionOdds) return -value;
+		else return value;
+	}
 
-	void Awake () {
-
+	void MakeWorld()
+	{
 		// We generate our world before doing anything else
 
 		Stack<GameObject> platformsInMap = new Stack<GameObject>(); // We will need to track all of our platforms here
 
 		Stack<GameObject> platformsBeingAdded = new Stack<GameObject>(); // Secondary tracking stack
 
-		platformsBeingAdded.Push(MakePlatform(startingPosition, false)); // Create our first platform and add it to the stack, don't add any additional features
+		// Create our first platform and add it to the stack, don't add any additional features
 
-		Vector3 endingPosition = new Vector3(RandomInsidePlatformCountBounds(), RandomInsidePlatformCountBounds(), RandomInsidePlatformCountBounds());
+		GameObject startingPlatform = MakePlatform(startingPosition, false);
 
-		GameObject endPlatform = MakePlatform(endingPosition, false); // We don't want any additional things on the final platform either
+		// If our starting platform is not the right size, try again
 
-		// Now create the end, with the goal located at it.
-
-		platformsBeingAdded.Push(endPlatform);
-
-		GameObject endGoal = Instantiate(goal, endPlatform.transform.position + new Vector3(0.0f, 2.0f, 0.0f), endPlatform.transform.rotation);
-		endGoal.transform.parent = endPlatform.transform; // We need to be able to move both of them at the same time if a viable solution is not possible.
-
-		// Create the rest of the platforms at random
-
-		float distanceToGoal = Vector3.Distance(startingPosition, endingPosition); // Start by getting distance to goal
-
-		Debug.Log("We are " + distanceToGoal + " units from the goal");
-		Debug.Log("X Offset: " + (startingPosition.x - endingPosition.x));
-		Debug.Log("Y Offset: " + (startingPosition.y - endingPosition.y));
-		Debug.Log("Z Offset: " + (startingPosition.z - endingPosition.z));
-
-		// Use a 3d array to store positions of new platforms
-		Vector3[,,] platformPoints = new Vector3[maxPlatforms, maxPlatforms, maxPlatforms];
-
-		// The actual position vector is not a valid index
-		Vector3 startingPositionIndexInMatrix = new Vector3(RandomPlatformArrayIndex(), RandomPlatformArrayIndex(), RandomPlatformArrayIndex());
-
-		platformPoints[(int)startingPositionIndexInMatrix.x, (int)startingPositionIndexInMatrix.y, (int)startingPositionIndexInMatrix.z] = startingPosition;
-
-		// See how many platforms we need until the end
-
-		int directPathPlatforms = (int)(distanceToGoal / maxPlatformOffset);
-
-		// Generate an index within the location matrix for the endpoint
-
-		Vector3 endingPositionIndexInMatrix = new Vector3(Mathf.Clamp(startingPositionIndexInMatrix.x + directPathPlatforms, 0, maxPlatforms -1), Mathf.Clamp(startingPositionIndexInMatrix.y + directPathPlatforms, 0, maxPlatforms -1), Mathf.Clamp(startingPositionIndexInMatrix.z + directPathPlatforms, 0, maxPlatforms -1));
-
-		// Now store the ending position
-
-		platformPoints[(int)endingPositionIndexInMatrix.x, (int)endingPositionIndexInMatrix.y, (int)endingPositionIndexInMatrix.z] = endingPosition;
-
-		// Populate the matrix
-
-		int xStart, yStart, zStart, xEnd, yEnd, zEnd; // These iterators and end indices will have to be set based on conditions
-
-		float xPosSeed, yPosSeed, zPosSeed; // We need these to avoid calculating them at every step of the for loop
-
-		if (endingPositionIndexInMatrix.x > startingPositionIndexInMatrix.x)
+		if (startingPlatform.GetComponent<BoxCollider>().size.x < maxPlatformOffset || startingPlatform.GetComponent<BoxCollider>().size.z < maxPlatformOffset)
 		{
-			xStart = (int)startingPositionIndexInMatrix.x;
-			xEnd = (int)endingPositionIndexInMatrix.x;
-			xPosSeed = startingPosition.x - endingPosition.x;
-		}
-		else
-		{
-			xStart = (int)endingPositionIndexInMatrix.x;
-			xEnd = (int)startingPositionIndexInMatrix.x;
-			xPosSeed = endingPosition.x - startingPosition.x;
-		}
-		if (endingPositionIndexInMatrix.y > startingPositionIndexInMatrix.y)
-		{
-			yStart = (int)startingPositionIndexInMatrix.y;
-			yEnd = (int)endingPositionIndexInMatrix.y;
-			yPosSeed = startingPosition.y - endingPosition.y;
-		}
-		else
-		{
-			yStart = (int)endingPositionIndexInMatrix.y;
-			yEnd = (int)startingPositionIndexInMatrix.y;
-			yPosSeed = endingPosition.y - startingPosition.y;
-
-		}
-		if (endingPositionIndexInMatrix.z > startingPositionIndexInMatrix.z)
-		{
-			zStart = (int)startingPositionIndexInMatrix.z;
-			zEnd = (int)endingPositionIndexInMatrix.z;
-			zPosSeed = startingPosition.z - endingPosition.z;
-		}
-		else
-		{
-			zStart = (int)endingPositionIndexInMatrix.z;
-			zEnd = (int)startingPositionIndexInMatrix.z;
-			zPosSeed = endingPosition.z - startingPosition.z;
+			MakeWorld();
+			return; // Because we don't want to make multiple layouts and deathboxes!
 		}
 
-		// Get the number of platforms to use
-		int platformCount;
+		platformsInMap.Push(startingPlatform);
+		platformsBeingAdded.Push(startingPlatform);
+		// Determine how many platforms to make, accounting for our starting platform
 
-		if (directPathPlatforms < minPlatforms) platformCount = Random.Range(minPlatforms, maxPlatforms);
-		else platformCount = Random.Range(directPathPlatforms, maxPlatforms);
-			
-		for (int i = xStart; i < xEnd; i++)
+		int platformsRemaining = Random.Range(minPlatforms, maxPlatforms) - 1;
+
+		for (int i = 0; i < platformsRemaining; i++)
 		{
-			for (int j = yStart; j < yEnd; j++)
-			{
-				for (int k = zStart; k < zEnd; k++)
-				{
-					if (platformCount <= 0) break; // Bail if we have run out of platforms to add.
+			// We need data from the last one to be added
 
-					// We generate a cadidate location for the next platform
+			GameObject lastPlatform = platformsBeingAdded.Pop();
 
-					Vector3 newPosition = new Vector3(xPosSeed / i , yPosSeed / j , xPosSeed / k);
+			// We have to offset from the last platform in at least one horizontal direction, 
 
-					// Try to get the last one we added
+			float xOffset = RandomInvert(RandomPlatformSpacing());
+			float zOffset = RandomInvert(RandomPlatformSpacing());
 
-					GameObject previousPlatform = null;
+			// We will only do a horizontal offset some of the time
 
-					// Only get the last platform if it exists
-					if (platformsBeingAdded.Count > 0) previousPlatform = platformsBeingAdded.Pop();
+			float yOffset;
 
-					if (previousPlatform != null)
-					{
-						platformsInMap.Push(previousPlatform); // We need to track what we have previously added.
+			if (Random.value >= verticalOffsetOdds) yOffset = RandomInvert(RandomPlatformSpacing());
+			else yOffset = 0.0f;
 
-						// Move our new platform if its location is not far enough from the last one
-						if (Mathf.Abs(newPosition.magnitude - previousPlatform.transform.position.magnitude) < minPlatformOffset)
-						{
-							// Randomize the horizontal axis to move along
-							switch (Random.Range(1, 2))
-							{
-								case 1: // Move along x axis
-									// Randomize sign
-									if (Random.value >= 0.5) newPosition[0] = newPosition[0] + RandomPlatformSpacing();
-									else newPosition[0] = newPosition[0] - RandomPlatformSpacing();
-									break;
-								case 2: // Move along z axis
-									// Randomize sign
-									if (Random.value >= 0.5) newPosition[2] = newPosition[2] + RandomPlatformSpacing();
-									else newPosition[2] = newPosition[2] - RandomPlatformSpacing();
-									break;
-							}
-						}
+			// Offset from the boundaries of the last platform's bounding box instead of its origin.
 
-						// Randomize y position at random
+			Vector3 newPosition = lastPlatform.transform.position + lastPlatform.GetComponent<BoxCollider>().size + new Vector3(xOffset, yOffset, zOffset);
 
-						if (Random.value >= 0.5)
-						{
-							// Randomize sign
-							if (Random.value >= 0.5) newPosition[1] = newPosition[1] + RandomPlatformSpacing();
-							else newPosition[1] = newPosition[1] - RandomPlatformSpacing();
-						}
-					}
+			GameObject newPlatform = MakePlatform(newPosition, true); // Also try to spawn extras
 
-					Debug.Log("Platform added at (" + newPosition.x + ", " + newPosition.y + "," + newPosition.z + ")");
-					// Only make a new platform if we need one
-					GameObject newPlatform = MakePlatform(newPosition, true);
-
-					platformsBeingAdded.Push(newPlatform);
-					platformCount--;
-				}
-			}
-		}
-
-		// Old Algorithm
-		/*
-		// See how many platforms we need until the end
-
-		int directPathPlatforms = (int)(distanceToGoal / minPlatformOffset);
-
-		// Get the number of platforms to use
-		int platformCount;
-
-		if (directPathPlatforms < minPlatforms) platformCount = Random.Range(minPlatforms, maxPlatforms);
-		else platformCount = Random.Range(directPathPlatforms, maxPlatforms);
-
-		// Lay out basic path
-		for (int i = 0; i < directPathPlatforms; i++)
-		{
-			GameObject previousPlatform = platformsBeingAdded.Pop();
-
-			platformsInMap.Push(previousPlatform); // We need to track what we have previously added.
-
-			Vector3 newPosition = (startingPosition - previousPlatform.transform.position) / 2;
-
-			// We don't want to have compressed platform spaces, so we shift platforms that are too close to the previous one
-			if (newPosition.magnitude >= minPlatformOffset)
-			{
-				float decompressionOffset = minPlatformOffset;
-				//
-				if (Random.value >= 0.5) decompressionOffset = -decompressionOffset;
-					
-				// Actually offset horizontally on either x or z axis, y being vertical in Unity, as conterintuitive as it is
-				if (Random.value >= 0.5) newPosition[0] += decompressionOffset;
-				if (Random.value >= 0.5) newPosition[2] += decompressionOffset;
-			}
-
-			GameObject newPlatform = MakePlatform(newPosition, true); // Add a platform and possibly add additional features to it
-
-			// Add to our linked inst, maintaining a sequential order of platforms
+			platformsInMap.Push(newPlatform);
 			platformsBeingAdded.Push(newPlatform);
-		}
 
-		// We have already added some platforms, so we will calculate and store the remaining ones
-		platformCount -= directPathPlatforms;
+			// Spawn the goal on the last platform
 
-		// Insert any additional platforms needed for successful player traversal and/or play value, but only if we need to do so.
-
-		if (platformCount > 0)
-		{
-			for (int i = 0; i < platformCount; i++)
+			if (i + 1 == platformsRemaining)
 			{
-				// Make a new platform in a random location and potentially spawn extras on it
-				MakePlatform(new Vector3(Random.Range(-maxPlatforms, maxPlatforms), Random.Range(-maxPlatforms, maxPlatforms), Random.Range(-maxPlatforms, maxPlatforms)), true);
-				platformCount--; // Because we need this for our remaining
+				GameObject endGoal = Instantiate(goal, newPlatform.transform.position + new Vector3(0.0f, 2.0f, 0.0f), newPlatform.transform.rotation);
 			}
 		}
-		*/
 
 		// Find the platform at the lowest level
 
@@ -370,6 +212,13 @@ public class WorldGenerator : MonoBehaviour {
 		}
 
 		AddDeathBox(new Vector3(0.0f, lowestPosition - 20.0f, 0.0f));
+	}
+
+	// Lifecycle
+
+	void Awake () {
+
+		MakeWorld();
 	}
 
 	// Use this for initialization
