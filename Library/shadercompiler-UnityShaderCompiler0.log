@@ -1,2 +1,98 @@
 Base path: /Applications/Unity/Unity.app/Contents
 Cmd: initializeCompiler
+Cmd: compileCompute
+  api=4 insize=1382 outsize=2177 ok=1
+Cmd: compileCompute
+  api=15 insize=1382 outsize=9633 ok=1
+Cmd: compileCompute
+  api=4 insize=3176 outsize=4809 ok=1
+Cmd: compileCompute
+  api=15 insize=3176 outsize=22197 ok=1
+Cmd: compileCompute
+  api=4 insize=1480 outsize=1909 ok=1
+Cmd: compileCompute
+  api=15 insize=1480 outsize=7293 ok=1
+Cmd: compileCompute
+  api=4 insize=2283 outsize=1365 ok=1
+Cmd: compileCompute
+  api=15 insize=2283 outsize=5505 ok=1
+Cmd: compileCompute
+  api=14 insize=1382 outsize=5317 ok=1
+Cmd: compileCompute
+  api=15 insize=1382 outsize=9633 ok=1
+Cmd: compileCompute
+  api=15 insize=1382 outsize=9633 ok=1
+Cmd: compileCompute
+  api=14 insize=3176 outsize=11645 ok=1
+Cmd: compileCompute
+  api=15 insize=3176 outsize=22197 ok=1
+Cmd: compileCompute
+  api=15 insize=3176 outsize=22197 ok=1
+Cmd: compileCompute
+  api=14 insize=1480 outsize=5293 ok=1
+Cmd: compileCompute
+  api=15 insize=1480 outsize=7293 ok=1
+Cmd: compileCompute
+  api=15 insize=1480 outsize=7293 ok=1
+Cmd: compileCompute
+  api=14 insize=2283 outsize=3581 ok=1
+Cmd: compileCompute
+  api=15 insize=2283 outsize=5505 ok=1
+Cmd: compileCompute
+  api=15 insize=2283 outsize=5505 ok=1
+Cmd: compileCompute
+  api=4 insize=1382 outsize=2177 ok=1
+Cmd: compileCompute
+  api=15 insize=1382 outsize=9633 ok=1
+Cmd: compileCompute
+  api=4 insize=3176 outsize=4809 ok=1
+Cmd: compileCompute
+  api=15 insize=3176 outsize=22197 ok=1
+Cmd: compileCompute
+  api=4 insize=1480 outsize=1909 ok=1
+Cmd: compileCompute
+  api=15 insize=1480 outsize=7293 ok=1
+Cmd: compileCompute
+  api=4 insize=2283 outsize=1365 ok=1
+Cmd: compileCompute
+  api=15 insize=2283 outsize=5505 ok=1
+Cmd: compileCompute
+  api=4 insize=1382 outsize=2177 ok=1
+Cmd: compileCompute
+  api=15 insize=1382 outsize=9633 ok=1
+Cmd: compileCompute
+  api=4 insize=3176 outsize=4809 ok=1
+Cmd: compileCompute
+  api=15 insize=3176 outsize=22197 ok=1
+Cmd: compileCompute
+  api=4 insize=1480 outsize=1909 ok=1
+Cmd: compileCompute
+  api=15 insize=1480 outsize=7293 ok=1
+Cmd: compileCompute
+  api=4 insize=2283 outsize=1365 ok=1
+Cmd: compileCompute
+  api=15 insize=2283 outsize=5505 ok=1
+Cmd: compileCompute
+  api=14 insize=1382 outsize=5317 ok=1
+Cmd: compileCompute
+  api=15 insize=1382 outsize=9633 ok=1
+Cmd: compileCompute
+  api=15 insize=1382 outsize=9633 ok=1
+Cmd: compileCompute
+  api=14 insize=3176 outsize=11645 ok=1
+Cmd: compileCompute
+  api=15 insize=3176 outsize=22197 ok=1
+Cmd: compileCompute
+  api=15 insize=3176 outsize=22197 ok=1
+Cmd: compileCompute
+  api=14 insize=1480 outsize=5293 ok=1
+Cmd: compileCompute
+  api=15 insize=1480 outsize=7293 ok=1
+Cmd: compileCompute
+  api=15 insize=1480 outsize=7293 ok=1
+Cmd: compileCompute
+  api=14 insize=2283 outsize=3581 ok=1
+Cmd: compileCompute
+  api=15 insize=2283 outsize=5505 ok=1
+Cmd: compileCompute
+  api=15 insize=2283 outsize=5505 ok=1

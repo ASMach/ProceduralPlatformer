@@ -4,4 +4,10 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/ProceduralPlatformerData/MainMenu.unity
+    guid: 853658160317b414dbae54e07d700520
+  - enabled: 1
+    path: Assets/ProceduralPlatformerData/TestScene.unity
+    guid: c8d85601b858b4497a7700869add7b8d
