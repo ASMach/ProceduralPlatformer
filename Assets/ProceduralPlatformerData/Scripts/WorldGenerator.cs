@@ -36,6 +36,8 @@ public class WorldGenerator : MonoBehaviour {
 
 	public float inversionOdds = 0.5f;
 
+	public ParticleSystem spawnEffect;
+
 	// Helper
 
 	private static Vector3 RandomPointInBox(Vector3 center, Vector3 size) {
@@ -223,6 +225,8 @@ public class WorldGenerator : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		// Spawn effect
+		if (spawnEffect) Instantiate(spawnEffect, startingPosition, Quaternion.identity);
 		// Spawn the player at the origin
 		Instantiate(player, startingPosition, Quaternion.identity);
 	}

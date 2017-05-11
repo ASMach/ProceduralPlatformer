@@ -25,7 +25,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &4370635711083598
 Transform:
@@ -68,8 +68,11 @@ MonoBehaviour:
   minPlatforms: 15
   maxPlatforms: 100
   maxGemsPerPlatform: 8
-  minPlatformOffset: 1
+  minPlatformOffset: 1.5
   maxPlatformOffset: 3
   hazardRisk: 0.25
   gemOdds: 0.5
   verticalOffsetOdds: 0.5
+  inversionOdds: 0.5
+  spawnEffect: {fileID: 198000010585806678, guid: 96730f8640590934eacb6f860058e7f9,
+    type: 2}
