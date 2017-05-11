@@ -30,7 +30,7 @@ public class PlayerStatus : MonoBehaviour {
 			if (value < 0) score = 0;
 			else score = value; 
 
-			Debug.Log("Score: " + score);
+			//Debug.Log("Score: " + score);
 
 			GameObject scoreLabel = GameObject.FindGameObjectWithTag("ScoreLabel");
 			scoreLabel.GetComponent<HUD.ScoreCounter>().UpdateScoreDisplay(score);
