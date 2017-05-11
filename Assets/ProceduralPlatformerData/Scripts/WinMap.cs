@@ -8,6 +8,8 @@ public class WinMap : MonoBehaviour {
 
 	public ParticleSystem winEffect;
 
+	public Canvas winScreen;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -24,6 +26,10 @@ public class WinMap : MonoBehaviour {
 		{	
 			// Play effect on win
 			if (winEffect) Instantiate<ParticleSystem>(winEffect, transform.position, transform.rotation * Quaternion.Euler(-90.0f, 0.0f, 0.0f));
+
+			// Show the win screen
+
+			Canvas screen = Instantiate(winScreen);
 
 			// Update player score here
 

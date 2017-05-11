@@ -170,10 +170,19 @@ public class WorldGenerator : MonoBehaviour {
 
 			platformsInMap.Push(previousPlatform); // We need to track what we have previously added.
 
-			Vector3 newPosition = (startingPosition - previousPlatform.transform.position);
+			Vector3 newPosition = (startingPosition - previousPlatform.transform.position) / 2;
 
-			// We don't want to have compressed platform spaces
-			if (newPosition.magnitude >= platformOffset) newPosition = (startingPosition - previousPlatform.transform.position) / 2;
+			// We don't want to have compressed platform spaces, so we shift platforms that are too close to the previous one
+			if (newPosition.magnitude >= platformOffset)
+			{
+				float decompressionOffset = platformOffset;
+				//
+				if (Random.value >= 0.5) decompressionOffset = -decompressionOffset;
+					
+				// Actually offset horizontally on either x or z axis, y being vertical in Unity, as conterintuitive as it is
+				if (Random.value >= 0.5) newPosition[0] += decompressionOffset;
+				if (Random.value >= 0.5) newPosition[2] += decompressionOffset;
+			}
 
 			GameObject newPlatform = MakePlatform(newPosition, true); // Add a platform and possibly add additional features to it
 

@@ -8,6 +8,8 @@ public class PlayerStatus : MonoBehaviour {
 
 	public GameObject deathEffect;
 
+	public Canvas gameoverScreen;
+
 	public float maxHealth = 100.0f;
 
 	private float health;
@@ -55,6 +57,6 @@ public class PlayerStatus : MonoBehaviour {
 		if (deathEffect) Instantiate(deathEffect, transform.position, transform.rotation);
 		Destroy(gameObject);
 
-		// TODO: Show graphics when the player has been killed
+		if (gameoverScreen) Instantiate(gameoverScreen);
 	}
 }

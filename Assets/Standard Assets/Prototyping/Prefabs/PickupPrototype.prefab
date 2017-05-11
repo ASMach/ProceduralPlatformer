@@ -110,6 +110,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   winEffect: {fileID: 19800002, guid: 180149b1a35449044a27b451e816d2de, type: 2}
+  winScreen: {fileID: 223458204430916232, guid: c216999e6b322464f9bec7a32824ba6a,
+    type: 2}
 --- !u!114 &114768553626717400
 MonoBehaviour:
   m_ObjectHideFlags: 1

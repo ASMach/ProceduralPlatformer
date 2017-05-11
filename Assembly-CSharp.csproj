@@ -107,6 +107,7 @@
      <Compile Include="Assets\PostProcessing\Runtime\Utils\RenderTextureFactory.cs" />
      <Compile Include="Assets\ProceduralPlatformerData\Scripts\GemBehavior.cs" />
      <Compile Include="Assets\ProceduralPlatformerData\Scripts\KillPlayer.cs" />
+     <Compile Include="Assets\ProceduralPlatformerData\Scripts\MenuBehavior.cs" />
      <Compile Include="Assets\ProceduralPlatformerData\Scripts\PlayerStatus.cs" />
      <Compile Include="Assets\ProceduralPlatformerData\Scripts\ScoreCounter.cs" />
      <Compile Include="Assets\ProceduralPlatformerData\Scripts\WinMap.cs" />
