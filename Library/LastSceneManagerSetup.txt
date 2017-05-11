@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/ProceduralPlatformerData/TestScene.unity
+- path: Assets/ProceduralPlatformerData/MainMenu.unity
   isLoaded: 1
   isActive: 1
